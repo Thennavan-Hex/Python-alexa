@@ -1,11 +1,14 @@
 import speech_recognition as sr
 import pyttsx3
+import pywhatkit
 import datetime
+import wikipedia
+import pyjokes
 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', 180)
+engine.setProperty('voice', voices[1].id)
 
 
 def talk(text):
@@ -20,16 +23,16 @@ def take_command():
             voice = listener.listen(source)
             command = listener.recognize_google(voice)
             command = command.lower()
-            if 'Jervis' in command:
-                command = command.replace('Jervis', '')
+            if 'alexa' in command:
+                command = command.replace('alexa', '')
                 print(command)
     except:
         pass
-    return command
+    
 
 
-def run_Ai():
-    command = take_command()
+def run_alexa():
+    
     print(command)
     if 'play' in command:
         song = command.replace('play', '')
@@ -38,19 +41,17 @@ def run_Ai():
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
         talk('Current time is ' + time)
-    elif 'who are you' in command:
-        talk("I am Your Artificial Slave ")
-    elif 'how are you' in command:
-        talk("I am Fine How about you ")
-    elif 'i am sad' in command:
-        talk("Don't Worry I always with you ")
+    elif 'who the heck is' in command:
+        person = command.replace('who the heck is', '')
+        info = wikipedia.summary(person, 1)
+        print(info)
+        talk(info)
     elif 'date' in command:
-        talk('sorry, I have a headache')
+        talk = talk('sorry, I have a headache')
     elif 'are you single' in command:
         talk('I am in a relationship with wifi')
+    elif 'joke' in command:
+        talk(pyjokes.get_joke())
     else:
         talk('Please say the command again.')
 
-
-while True:
-    run_Ai()
